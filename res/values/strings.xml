@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TimeInRoad</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_show_bus_count">Show bus count</string>
+	<string name="menu_show_all_data">Show all</string>
+	<string name="menu_clear_data">Clear all</string>
+</resources>
