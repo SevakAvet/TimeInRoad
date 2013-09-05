@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:src="@drawable/btn_start_with_text" />
+        android:src="@drawable/btn_start_with_text"/>
 
     <RadioGroup
         android:id="@+id/busNumber"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="53"
+            android:text="@string/_53"
             android:textSize="50sp"
             android:textStyle="bold" />
 
@@ -35,9 +35,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:text="6"
+            android:text="@string/_6"
             android:textSize="50sp"
             android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/bus3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/_3"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
     </RadioGroup>
 
 </RelativeLayout>

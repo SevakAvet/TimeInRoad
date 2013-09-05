@@ -29,7 +29,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	private static final String STARTED = "started";
 	private static final String START_TIME = "startTime";
 	
-	private static int bus53_id = R.id.bus53;
+	private static final int bus53_id = R.id.bus53;
+	private static final int bus6_id = R.id.bus6;
 	
 	private static Animation anim;
 	private static Period between;
@@ -73,11 +74,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				startActivity(intent);
 				break;
 				
-			case R.id.menu_clear_data:
+/*			case R.id.menu_clear_data:
 				File file = new File(getFilesDir() + FILE_NAME);
 				file.delete();
 				break;
-
+				
+			case R.id.menu_show_minmax:
+				Toast.makeText(this, "Whle not realised!", Toast.LENGTH_SHORT).show();
+				break;*/
+				
 			default:
 				return super.onOptionsItemSelected(item);	
 		}
@@ -89,7 +94,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		v.startAnimation(anim);
 		
-		int bus_number = busNumbers.getCheckedRadioButtonId() == bus53_id ? 53 : 6;
+		int bus_number = getCheckedBusNumber();
 		
 		if(started) {
 			disable(false);
@@ -124,10 +129,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			disable(false);
 		}
 		
-		if (sPref.getInt(BUS_NUMBER, -1) == 6) {
-			busNumbers.check(R.id.bus6);
-		} else {
-			busNumbers.check(R.id.bus53);
+		checkRadioButton();
+	}
+	
+	private static int getCheckedBusNumber() {
+		switch (busNumbers.getCheckedRadioButtonId()) {
+		case bus53_id:
+			return 53;
+		case bus6_id:
+			return 6;
+		default:
+			return 3;
+		}
+	}
+	
+	private static void checkRadioButton() {
+		int bus_number = sPref.getInt(BUS_NUMBER, -1);
+		
+		switch (bus_number) {
+		case 6:
+			busNumbers.check(bus6_id);
+			break;
+		case 53:
+			busNumbers.check(bus53_id);
+			break;
+		default:
+			busNumbers.check(R.id.bus3);
 		}
 	}
 	

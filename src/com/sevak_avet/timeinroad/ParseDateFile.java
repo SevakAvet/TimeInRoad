@@ -2,63 +2,78 @@ package com.sevak_avet.timeinroad;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 public class ParseDateFile {
 	
+	private static String line = "";
+
 	public static void busCounter(Context context) {
-		File file = new File(context.getFilesDir() + "/times.txt");
+		BufferedReader reader = getReader(context);
 		
 		int bus53 = 0;
 		int bus6 = 0;
+		int bus3 = 0;
 		int currentBus = 0;
 		
-		try{
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = "";
-			
+		try {			
 			while((line = reader.readLine()) != null) {
 				line = line.substring(0, 2).trim();
 				currentBus = Integer.parseInt(line);
 				
-				if(currentBus == 53) {
+				switch (currentBus) {
+				case 53:
 					++bus53;
-				} else {
+					break;
+					
+				case 6:
 					++bus6;
+					break;
+					
+				case 3:
+					++bus3;
+					break;				
 				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		Toast.makeText(context, "Bus 53: " + bus53, Toast.LENGTH_SHORT).show();
-		Toast.makeText(context, "Bus 6: " + bus6, Toast.LENGTH_SHORT).show();	
+		Toast.makeText(context, "Bus 6: " + bus6, Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "Bus 3: " + bus3, Toast.LENGTH_SHORT).show();	
 	}
 
 	public static List<String> getAllData(Context context) {
-		File file = new File(context.getFilesDir() + "/times.txt");
+		BufferedReader reader = getReader(context);
 		
 		List<String> data = new ArrayList<String>();
 		String[] source = new String[4];
 		
-		
 		DateTime start;
 		DateTime end;
+		String formatString = "";
+		int id = 0;
 		
-		try{
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = "";
-			String formatString = "";
-			int id = 0;
-			
+		try {	
 			while((line = reader.readLine()) != null) {
 				source = line.split(" ");
 				start = new DateTime(Long.parseLong(source[1]));
@@ -74,6 +89,16 @@ public class ParseDateFile {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(data.isEmpty()) {
+			data.add("No data");
 		}
 		
 		return data;
@@ -88,5 +113,19 @@ public class ParseDateFile {
 		stringBuilder.append(":");
 		stringBuilder.append(date.getSecondOfMinute());
 		return stringBuilder.toString();
+	}
+	
+	private static BufferedReader getReader(Context context) {
+		File file = new File(context.getFilesDir() + "/times.txt");
+		BufferedReader reader = null;
+		
+		try {
+			reader = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			Log.e("Sevak", "File not found...", e);
+			e.printStackTrace();
+		}
+		
+		return reader;
 	}
 }
